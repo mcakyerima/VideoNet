@@ -1,12 +1,34 @@
 import { BellIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import Link from 'next/link'
+import { useState, useEffect } from 'react';
 
 
 function Header() {
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    
+
+    useEffect(() => {
+        const handleScroll =  () => {
+            if(window.scrollY > 0) {
+                setIsScrolled(true);
+            }else {
+                setIsScrolled(false);
+            }
+        }
+
+        // clean up function for window event 
+
+        window.addEventListener('scroll', handleScroll)
+
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
+
   return (
-    <header>
+    <header className={`${isScrolled ? 'bg-[#141414]' : 'bg-transparent'}`}>
         {/* left section of nav */}
-        <div className="flex  items-center space-x-2 md:space-x-10">
+        <div className="flex  items-center space-x-2 md:space-x-10 z-50">
             <img
                 src="https://rb.gy/ulxxee"
                 width={100}
