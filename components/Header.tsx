@@ -30,9 +30,9 @@ function Header() {
         {/* left section of nav */}
         <div className="flex  items-center space-x-2 md:space-x-10 z-50">
             <img
-                src="/vid.png"
-                width={40}
-                height={40}
+                src="/movie-net.png"
+                width={140}
+                height={140}
                 className="cursor-pointer object-contain"
             />
 

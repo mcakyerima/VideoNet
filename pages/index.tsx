@@ -33,7 +33,7 @@ const Home = ({
   return (
     <div className="relative h-screen bg-gradient-to-b  lg:h-[140vh] ">
       <Head>
-        <title>VideoNet</title>
+        <title>Home - VideoNet</title>
         <link rel="icon" href="/vid.png" />
       </Head>
       {/* header  */}
