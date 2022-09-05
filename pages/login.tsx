@@ -1,9 +1,25 @@
 import Head from "next/head"
 import Image from "next/image"
 import { useState } from "react"
+import { SubmitHandler, useForm } from "react-hook-form";
+
+interface Inputs { 
+    email: string
+    password: string
+}
 
 function login() {
     const [login, setLogin] = useState(false)
+
+    // React Hook form custom hook 
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
+    const onSubmit: SubmitHandler<Inputs> = async ({email , password }) => {
+        if(login){
+            // await signIn(email, password)
+        }else {
+            // signUp(email, password)
+        }
+    }
 
 
   return (
@@ -30,22 +46,42 @@ function login() {
 
       {/* login form */}
 
-      <form className="relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14" > 
+      <form onSubmit={handleSubmit(onSubmit)} className="relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14" > 
         <h1 className="text-4xl font-semibold">Sign In</h1>
         <div className="space-y-4">
             <label className="inline-block w-full">
-                <input type="email" placeholder="Email" className="input"/>
+                <input 
+                type="email"
+                placeholder="Email"
+                className="input"
+                {...register('email', {required: true})}
+                
+                />
+
+                {errors.email && <p className="p-1 text-[13px] font-light text-orange-500">Please enter a valid email address</p>}
             </label>
             <label className="inline-block w-full">
-                <input type="password" className="input" placeholder="Password"/>
+                <input 
+                    type="password"
+                    className="input"
+                    placeholder="Password"
+                    {...register('password', {required: true})}
+
+                />
+                {errors.password && 
+                    <p className="p-1 text-[13px] font-light text-orange-500">
+                        Your Password must be between 5 to 15 characters.
+                    </p>}
+
+
             </label>
         </div>
 
         <button className="w-full rounded-lg bg-[#e50914] py-3 font-semibold">Sign In</button>
 
-        <div className="text-gray-600">
-            New To VidoeNet?
-            <button type="submit" className="ml-3 text-white hover:underline">Sign up now</button>
+        <div className="text-gray-300">
+            New To Movie-Net?
+            <button type="submit" onClick={() => setLogin(true)} className="ml-3 text-white hover:underline">Sign up now</button>
         </div>
       </form>
     </div>
