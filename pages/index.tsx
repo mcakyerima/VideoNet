@@ -6,6 +6,7 @@ import Header from '../components/Header'
 import requests from '../utils/requests'
 import { Movie } from '../typings'
 import Raw from '../components/Raw'
+import useAuth from '../custom_hooks/useAuth'
 
 
 interface Props {
@@ -29,6 +30,13 @@ const Home = ({
   horrorMovies,
   romanceMovies,
   documentaries, }: Props) => {
+
+    // checking loading state
+    const { loading } = useAuth()
+
+    console.log(netflixOriginals)
+
+    if ( loading ) return "Loading" 
 
   return (
     <div className="relative h-screen bg-gradient-to-b  lg:h-[140vh] ">

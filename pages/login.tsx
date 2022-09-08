@@ -2,6 +2,7 @@ import Head from "next/head"
 import Image from "next/image"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
+import useAuth from "../custom_hooks/useAuth";
 
 interface Inputs { 
     email: string
@@ -11,13 +12,16 @@ interface Inputs {
 function login() {
     const [login, setLogin] = useState(false)
 
+    // use our cusom hook
+    const {signIn , signUp } = useAuth()
+
     // React Hook form custom hook 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = async ({email , password }) => {
         if(login){
-            // await signIn(email, password)
+            await signIn(email, password)
         }else {
-            // signUp(email, password)
+           await signUp(email, password)
         }
     }
 
@@ -77,11 +81,11 @@ function login() {
             </label>
         </div>
 
-        <button className="w-full rounded-lg bg-[#e50914] py-3 font-semibold">Sign In</button>
+        <button type="submit" className="w-full rounded-lg bg-[#e50914] py-3 font-semibold" onClick={() => setLogin(true)}>Sign In</button>
 
         <div className="text-gray-300">
             New To Movie-Net?
-            <button type="submit" onClick={() => setLogin(true)} className="ml-3 text-white hover:underline">Sign up now</button>
+            <button type="submit" onClick={() => setLogin(false)} className="ml-3 text-white hover:underline">Sign up now</button>
         </div>
       </form>
     </div>
