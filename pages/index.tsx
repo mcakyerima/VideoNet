@@ -7,6 +7,9 @@ import requests from '../utils/requests'
 import { Movie } from '../typings'
 import Raw from '../components/Raw'
 import useAuth from '../custom_hooks/useAuth'
+import { useRecoilValue } from 'recoil'
+import { modalState } from '../atoms/modalAtoms'
+import Modal from '../components/Modal'
 
 
 interface Props {
@@ -30,6 +33,8 @@ const Home = ({
   horrorMovies,
   romanceMovies,
   documentaries, }: Props) => {
+
+    const showModal = useRecoilValue(modalState)
 
     // checking loading state
     const { loading } = useAuth()
@@ -63,6 +68,7 @@ const Home = ({
           </section>
       </main>
       {/* Modal */}
+      {showModal && <Modal/>}
 
     </div>
   )
