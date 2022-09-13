@@ -93,7 +93,36 @@ function Modal() {
                     ) }
                   </button>
                 </div>
-              
+            </div>
+            <div className="flex space-x-16 rounded-b-md bg-[#181818] px-10 py-8">
+              <div className="text-lg space-y-8">
+              <div className="flex items-center space-x-2 text-sm">
+                    <p className="font-semibold text-green-400 ">{movie?.vote_average * 10 }% Match</p>
+                    <p className="font-light">{movie?.release_date || movie?.first_air_date}</p>
+                    <div className="flex h-4 items-center justify-center rounded border border-white/40 text-xs px-1.5">HD</div>
+                  </div>
+
+                  <div className="flex flex-col gap-10 gap-y-4 font-light md:flex-row">
+                    <p className="w-5/6">{movie?.overview}</p>
+                    <div className="flex flex-col space-y-3 text-sm">
+                      <div>
+                        <span className="text-[gray]"> Genres    </span>
+                        {genres.map((genres) => genres.name).join(', ')}
+                      </div>
+
+                      <div>
+                        <span className="text-[gray]">Original Language:  </span>
+                        {movie?.original_language}
+
+                        <div>
+                          <span className="text-[gray]">Vote Count:   </span>
+                          {movie?.vote_count}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+                  
             </div>
          </>
     </MuiModal>
