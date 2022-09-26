@@ -10,6 +10,12 @@ import useAuth from '../custom_hooks/useAuth'
 import { useRecoilValue } from 'recoil'
 import { modalState } from '../atoms/modalAtoms'
 import Modal from '../components/Modal'
+import { FaPlaneSlash } from 'react-icons/fa'
+import Plan from '../components/Plan'
+import { getProducts, Product } from '@stripe/firestore-stripe-payments'
+import payments from '../library/stripe'
+import useSubscription from '../custom_hooks/useSubscription'
+
 
 
 interface Props {
@@ -21,6 +27,7 @@ interface Props {
   horrorMovies: Movie[]
   romanceMovies: Movie[]
   documentaries: Movie[]
+  products: Product[]
 
 }
 
@@ -32,16 +39,27 @@ const Home = ({
   comedyMovies,
   horrorMovies,
   romanceMovies,
-  documentaries, }: Props) => {
+  documentaries,
+  products }: Props) => {
+    
 
     const showModal = useRecoilValue(modalState)
 
-    // checking loading state
-    const { loading } = useAuth()
+    // check loading state and import user for subscription validation
+
+    const { user, loading } = useAuth()
+
+    // dummy value for subsription....if no subscription...dnt show home components
+    const subscription = useSubscription(user);
+    console.log("subscription data " , subscription)
 
     console.log(netflixOriginals)
 
-    if ( loading ) return "Loading" 
+
+    if ( loading || subscription === null ) return null
+
+    // if user not subscribed? return to subscrition page
+    if (!subscription) return <Plan products={products}/>
 
   return (
     <div className="relative h-screen bg-gradient-to-b  lg:h-[140vh] ">
@@ -77,6 +95,12 @@ const Home = ({
 export default Home
 
 export const getServerSideProps = async () => {
+// get products from firebase 
+const products = await getProducts(payments, { 
+  includePrices: true,
+  activeOnly: true
+}).then((res) => res).catch((error) => console.log(error.message));
+
   const [
         netflixOriginals,
         trendingNow,
@@ -106,6 +130,7 @@ export const getServerSideProps = async () => {
       horrorMovies: horrorMovies.results,
       romanceMovies: romanceMovies.results,
       documentaries: documentaries.results,
+      products
     },
   }
 }

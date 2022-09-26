@@ -3,6 +3,8 @@ import Image from "next/image"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
 import useAuth from "../custom_hooks/useAuth";
+import { useRouter } from 'next/router'
+import Loader from "../components/loader";
 
 interface Inputs { 
     email: string
@@ -11,7 +13,9 @@ interface Inputs {
 
 function login() {
     const [login, setLogin] = useState(false)
-
+    const [loading , setLoading ] = useState(false)
+    const { asPath } = useRouter()
+    
     // use our cusom hook
     const {signIn , signUp } = useAuth()
 
@@ -81,7 +85,9 @@ function login() {
             </label>
         </div>
 
-        <button type="submit" className="w-full rounded-lg bg-[#e50914] py-3 font-semibold" onClick={() => setLogin(true)}>Sign In</button>
+        <button type="submit" className="w-full rounded-lg bg-[#e50914] py-3 font-semibold" onClick={() => {setLogin(true); setLoading(true);}}>
+          {loading ? "Loging-in" && <Loader text="Logging in" color="dark:fill-gray-300"/> : "Sign In"}
+          </button>
 
         <div className="text-gray-300">
             New To Movie-Net?
