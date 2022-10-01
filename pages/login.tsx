@@ -15,6 +15,12 @@ function login() {
     const [login, setLogin] = useState(false)
     const [loading , setLoading ] = useState(false)
     const { asPath } = useRouter()
+
+    // import errror from firebase for login button handling
+ 
+    const { error } = useAuth()
+
+    console.log("error message" , error)
     
     // use our cusom hook
     const {signIn , signUp } = useAuth()
@@ -80,20 +86,21 @@ function login() {
                     <p className="p-1 text-[13px] font-light text-orange-500">
                         Your Password must be between 5 to 15 characters.
                     </p>}
-
-
             </label>
         </div>
 
         <button type="submit" className="w-full rounded-lg bg-[#e50914] py-3 font-semibold" onClick={() => {setLogin(true); setLoading(true);}}>
-          {loading ? "Loging-in" && <Loader text="Logging in" color="dark:fill-gray-300"/> : "Sign In"}
-          </button>
+          
+          {`${loading && !error ? 'logging-in' && <Loader text="Logging in" color="dark:fill-gray-300"/> : 'Sign In'}`}
+        </button>
 
+          {`${!loading && error ? <p className="p-1 text-[13px] font-light text-orange-500">{error}</p> : ''}`}
+          
         <div className="text-gray-300">
             New To Movie-Net?
             <button type="submit" onClick={() => setLogin(false)} className="ml-3 text-white hover:underline">Sign up now</button>
         </div>
-      </form>
+      </form> 
     </div>
   )
 }

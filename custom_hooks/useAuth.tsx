@@ -25,7 +25,7 @@ import {
     children: React.ReactNode
   }
 
-//   we using create context cox it allows us to use what ever context we create accross all the
+//   we're using create context cox it allows us to use what ever context we create accross all the
 // components in our app, like theme, uthenticated user page access and more
 // we just wrap our app with the contex.Provider and our app has acces to all the values in the context
 
@@ -52,18 +52,22 @@ export const AuthProvider = ({ children }: AuthProviderProp) => {
     //   make auth persist so that app doesnt go to login page when user refresh
     useEffect (
         () => onAuthStateChanged(auth, (user) => {
+            // if user exist in firebase auth which indicates user has logged in then setUser to user
+            // and set loading to false
             if (user) {
                 // user Logged in 
                 setUser(user)
                 setLoading(false)
             } else {
-                // usr not logged in yet
+                // user has logged out or user not not logged in yet in firebase auth
                 setUser(null)
                 setLoading(true)
                 router.push('/login')
             }
 
             setInitialLoading(false)
+
+            // function called when ever auth state changes to logged in or logged out
 
         }), [ auth ]
     )
@@ -97,7 +101,7 @@ export const AuthProvider = ({ children }: AuthProviderProp) => {
             setLoading(false)
         })
         // error handling
-        .catch((error) => alert(error.message))
+        .catch((error) =>{setError(error.message); alert(error.message);})
         .finally(() => setLoading(false))
 
     }
