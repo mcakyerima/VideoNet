@@ -20,7 +20,20 @@ const loadCheckout = async (priceId: string) => {
     }).then((snapshot) => window.location.assign(snapshot.url)).catch((error) => console.log(error.message));
 }
 
+// got to billing pottal to adjust subscription all code snippets 
+// below are from the stripe extension firebase
+const goToBillingPortal = async () => {
+    const instance = getFunctions(app, "us-central1")
+    // another function to redirect user to stripe portal..{code from stripe extension firebase docs}
+    const functionRef = httpsCallable(instance,'ext-firestore-stripe-payments-createPortalLink')
+
+    await functionRef({
+        returnUrl: `${window.location.origin}/account`
+    }).then(({data}: any)=> window.location.assign(data.url)).catch((error)=> console.log(error.message))
+}
+
+
 // export loadCheckout as named export and export default the payments functon
 
-export { loadCheckout };
+export { loadCheckout, goToBillingPortal };
 export default payments

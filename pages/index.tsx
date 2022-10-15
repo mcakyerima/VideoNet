@@ -49,7 +49,7 @@ const Home = ({
 
     const { user, loading } = useAuth()
 
-    // dummy value for subsription....if no subscription...dnt show home components
+    //....if no subscription...dnt show home components
     const subscription = useSubscription(user);
     console.log("subscription data " , subscription)
 

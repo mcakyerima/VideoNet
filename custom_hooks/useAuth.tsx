@@ -118,7 +118,7 @@ export const AuthProvider = ({ children }: AuthProviderProp) => {
         }
     
 
-    // memoise our values before passing it ot authContext to make it more optimezed
+    // memoise our values before passing it ot authContext to make it more optimized
     // and track and trigger changes will only recompute the memoized value when one of the deps has changed
 
     const memoisedValues = useMemo(() => ({

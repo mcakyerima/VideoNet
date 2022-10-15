@@ -91,10 +91,10 @@ function login() {
 
         <button type="submit" className="w-full rounded-lg bg-[#e50914] py-3 font-semibold" onClick={() => {setLogin(true); setLoading(true);}}>
           
-          {`${loading && !error ? 'logging-in' && <Loader text="Logging in" color="dark:fill-gray-300"/> : 'Sign In'}`}
+          {loading && error == null ? <Loader text="Logging in" color="dark:fill-gray-300"/> : 'Sign In'}
         </button>
 
-          {`${!loading && error ? <p className="p-1 text-[13px] font-light text-orange-500">{error}</p> : ''}`}
+          { error ? <p className="p-1 text-[15px] font-light text-red-500 ">User not found, Please sign up</p> : ''}
           
         <div className="text-gray-300">
             New To Movie-Net?

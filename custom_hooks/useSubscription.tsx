@@ -12,7 +12,7 @@ function useSubscription(user : User | null) {
 
         // payment event listener for stripe subscription
         onCurrentUserSubscriptionUpdate(payments, (snapshot) => {
-            // filter through subsction and chec for subscription status that is active or trialing that return a boolean true of false base on the filter
+            // filter through subsction and check for subscription status that is active or trialing that return a boolean true of false base on the filter
             setSubscription(
                 snapshot.subscriptions.filter(
                     (subscription) => subscription.status === 'active' ||
@@ -21,6 +21,7 @@ function useSubscription(user : User | null) {
         })
 
     },[user])
+    console.log("subscription data", subscription)
 
   return subscription
 } 
