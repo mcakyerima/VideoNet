@@ -1,10 +1,13 @@
-import { HandThumbUpIcon, PlusIcon, XCircleIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { CheckIcon, HandThumbUpIcon, PlusIcon, XCircleIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import MuiModal from '@mui/material/Modal'
+import { deleteDoc, doc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { FaPlay, FaVolumeDown, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import ReactPlayer from 'react-player/lazy';
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { modalState, movieState } from '../atoms/modalAtoms'
+import useAuth from '../custom_hooks/useAuth';
+import { db } from '../firebase';
 import { Element, Movie, Genre } from '../typings';
 
 
@@ -14,7 +17,12 @@ function Modal() {
     const [trailer , setTrailer ] = useState('')
     const [ genres , setGenres ] = useState<Genre[]>([])
     const [ muted , setMuted ] = useState(true)
-  
+    const [ addedToList , setAddedToList ] = useState(false);
+
+    // get the current user
+    const { user } = useAuth()
+
+
     // useEffect hook to fetch individual movies 
     useEffect(() => {
         // if (!movie) return;
@@ -44,6 +52,14 @@ function Modal() {
 
         fetchMovies()
     },[movie])
+
+    const handleList = async () => {
+      if (addedToList) {
+        // if added to list and user clicks the button, delete the movie from myList
+        // in firebase
+         await deleteDoc(doc(db, "customers", user!.uid, "myList",movie?.id.toString()!))
+      }
+    }
 
     console.log("trailer link" , trailer)
     console.log("genres" , genres)
@@ -76,10 +92,16 @@ function Modal() {
                       Play
                       </button>
 
-                      <button className="modalButton">
-                        <PlusIcon className="h-7 w-7"/>
+                      <button className="modalButton" onClick={handleList}>
+                      {
+                            addedToList ? (
+                             <CheckIcon className="h-7 w-7"/>
+                            ) : (
+                             <PlusIcon className="h-7 w-7"/>
+                            )
+                           }
                       </button>
-
+                          
                       <button className="modalButton">
                         <HandThumbUpIcon className="h-7 w-7"/>
                       </button>
